@@ -1,50 +1,40 @@
-# dockerize-a-mern-stack-app
-This repo helps you understand how to containerize a mern stack app and deploy
+# A simple MERN stack application 
 
-A simple MERN stack application
-**Create a network for the docker containers**
+### Create a network for the docker containers
 
-docker network create demo
+`docker network create demo`
 
-## **Build the client**
+### Build the client 
 
+```sh
 cd mern/frontend
+docker build -t mern-frontend .
+```
 
-<pre><code>docker build -t mern-frontend .</code></pre>
+### Run the client
 
-## **Run the client**
+`docker run --name=frontend --network=demo -d -p 5173:5173 mern-frontend`
 
-<pre><code>
-docker run --name=frontend --network=demo -d -p 5173:5173 mern-frontend
-</code></pre>
+### Verify the client is running
 
-## **Verify the client is running**
+Open your browser and type `http://localhost:5173`
 
-Open your browser and type http://localhost:5173
+### Run the mongodb container
 
-## **Run the mongodb container**
+`docker run --network=demo --name mongodb -d -p 27017:27017 -v ~/opt/data:/data/db mongodb:latest`
 
-<pre><code>
-docker run --network=demo --name mongodb -d -p 27017:27017 -v ~/opt/data:/data/db mongodb:latest
-</code></pre>
+### Build the server
 
-## **Build the server**
-
-
+```sh
 cd mern/backend
-
-<pre><code>
 docker build -t mern-backend .
-</code></pre>
+```
 
-## **Run the server**
+### Run the server
 
-<pre><code>
-docker run --name=backend --network=demo -d -p 5050:5050 mern-backend
-</code></pre>
+`docker run --name=backend --network=demo -d -p 5050:5050 mern-backend`
 
-## **Using Docker Compose**
+## Using Docker Compose
 
-<pre><code>
-docker compose up -d
-</code></pre>
+`docker compose up -d`
+
